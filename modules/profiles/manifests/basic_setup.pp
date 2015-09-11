@@ -38,7 +38,7 @@ class profiles::basic_setup {
     user { $default_user:
         ensure     => 'present',
         managehome => yes,
-        password   => $default_pwd,
+        password   => generate('/bin/sh', '-c', "mkpasswd -m sha-512 ${default_pwd} | tr -d '\n'"),
         shell      => '/bin/bash',
     } ->
     sudo::conf { $default_user:
