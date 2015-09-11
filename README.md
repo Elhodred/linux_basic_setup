@@ -35,5 +35,5 @@ sudo puppet apply -v --hiera_config=hiera.yaml -e "include roles::basic_setup" -
 ### To change hiera data on the fly
 For example from a shell script.
 ```
-sed -i 's/^profiles::basic_setup::ssh_port:.*$/profiles::basic_setup::ssh_port: 2222/' hieradata/common.yaml
+sed -i 's/^profiles::basic_setup::sshd_port:.*$/profiles::basic_setup::sshd_port: 2222/' hieradata/common.yaml
 ```

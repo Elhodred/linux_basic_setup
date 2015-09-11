@@ -1,6 +1,6 @@
 # profiles::nasic_setup.pp
 class profiles::basic_setup {
-    $ssh_port     = hiera('profiles::basic_setup::ssh_port')
+    $sshd_port     = hiera('profiles::basic_setup::sshd_port')
     $default_user = hiera('profiles::basic_setup::default_user')
     $default_pwd  = hiera('profiles::basic_setup::default_pwd')
     $sshd_service = hiera('profiles::basic_setup::sshd_service')
@@ -15,12 +15,12 @@ class profiles::basic_setup {
     file_line { 'sshd_config':
         path    => '/etc/ssh/sshd_config',
         match   => ".?Port ",
-        line    => "Port ${ssh_port}",
+        line    => "Port ${sshd_port}",
         replace => true,
         notify  => Service[$sshd_service],
     } ->
     class { 'basic_fw':
-        ssh_port => $ssh_port,
+        sshd_port => $sshd_port,
     }
 
     service { $sshd_service:

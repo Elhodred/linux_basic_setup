@@ -1,5 +1,5 @@
 class basic_fw::pre(
-    $ssh_port = 22
+    $sshd_port = 22
 ) {
     Firewall {
       require => undef,
@@ -30,9 +30,9 @@ class basic_fw::pre(
     state  => ['RELATED', 'ESTABLISHED'],
     action => 'accept',
   }->
-   firewall { "004 SSH port, ${ssh_port}":
+   firewall { "004 SSH port, ${sshd_port}":
        proto  => 'tcp',
-       dport  => $ssh_port,
+       dport  => $sshd_port,
        action => 'accept',
    }
 }
