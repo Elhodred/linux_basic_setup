@@ -38,7 +38,7 @@ class profiles::basic_setup {
     user { $default_user:
         ensure     => 'present',
         managehome => yes,
-        password   => generate('/bin/sh', '-c', "mkpasswd -m sha-512 ${default_pwd} | tr -d '\n'"),
+        password   => generate('/bin/sh', '-c', "python -c \"import crypt,random,string; print crypt.crypt('${default_pwd}', '\$6\$' + ''.join([random.choice(string.ascii_letters + string.digits) for _ in range(16)]))\" | tr -d '\n'"),
         shell      => '/bin/bash',
     } ->
     sudo::conf { $default_user:
