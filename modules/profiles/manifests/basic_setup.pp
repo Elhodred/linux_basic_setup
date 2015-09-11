@@ -3,26 +3,27 @@ class profiles::basic_setup {
     $ssh_port     = hiera('profiles::basic_setup::ssh_port')
     $default_user = hiera('profiles::basic_setup::default_user')
     $default_pwd  = hiera('profiles::basic_setup::default_pwd')
+    $sshd_service = hiera('profiles::basic_setup::sshd_service')
 
     file_line { 'sshd_permitrootlogin':
         path    => '/etc/ssh/sshd_config',
         match   => ".?PermitRootLogin yes",
         line    => "PermitRootLogin no",
         replace => true,
-        notify  => Service['sshd'],
+        notify  => Service[$sshd_service],
     } ->
     file_line { 'sshd_config':
         path    => '/etc/ssh/sshd_config',
         match   => ".?Port ",
         line    => "Port ${ssh_port}",
         replace => true,
-        notify  => Service['sshd'],
+        notify  => Service[$sshd_service],
     } ->
     class { 'basic_fw':
         ssh_port => $ssh_port,
     }
 
-    service { 'sshd':
+    service { $sshd_service:
         ensure => running,
         enable => true,
     }
